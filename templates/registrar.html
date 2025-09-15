@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-6 mt-8 relative overflow-hidden">
+
+    <h2 class="text-2xl font-bold mb-6 text-center text-blue-600">Registrar Nuevo Afiliado</h2>
+
+    <!-- Mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="mb-4 p-3 rounded flex items-center gap-2 {{ 'bg-red-100 text-red-800' if category=='danger' else 'bg-green-100 text-green-800' }}">
+            {% if category == 'danger' %}
+            <!-- SVG X -->
+            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+            {% elif category=='success' %}
+            <!-- SVG check -->
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+            </svg>
+            {% endif %}
+            <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-4" novalidate>
+        <!-- Nombre -->
+        <div class="relative">
+            <label class="block font-medium mb-1">Nombre</label>
+            <input id="nombre" type="text" name="nombre" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 pr-10"
+                   value="{{ nombre|default('') }}" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}" placeholder="Ej: Juan" required>
+            <span id="nombre-status" class="absolute right-3 top-1/2 transform -translate-y-1/2"></span>
+        </div>
+
+        <!-- Apellido -->
+        <div class="relative">
+            <label class="block font-medium mb-1">Apellido</label>
+            <input id="apellido" type="text" name="apellido" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 pr-10"
+                   value="{{ apellido|default('') }}" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}" placeholder="Ej: Pérez" required>
+            <span id="apellido-status" class="absolute right-3 top-1/2 transform -translate-y-1/2"></span>
+        </div>
+
+        <!-- Cédula -->
+        <div class="relative">
+            <label class="block font-medium mb-1">Cédula</label>
+            <input id="cedula" type="text" name="cedula" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 pr-10"
+                   value="{{ cedula|default('') }}" pattern="\d{10}" placeholder="10 dígitos" required>
+            <span id="cedula-status" class="absolute right-3 top-1/2 transform -translate-y-1/2"></span>
+        </div>
+
+        <!-- Email -->
+        <div class="relative">
+            <label class="block font-medium mb-1">Correo</label>
+            <input id="email" type="email" name="email" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 pr-10"
+                   value="{{ email|default('') }}" placeholder="ejemplo@correo.com" required>
+            <span id="email-status" class="absolute right-3 top-1/2 transform -translate-y-1/2"></span>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="relative">
+            <label class="block font-medium mb-1">Teléfono</label>
+            <input id="telefono" type="tel" name="telefono" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 pr-10"
+                   value="{{ telefono|default('') }}" pattern="\d{7,15}" placeholder="7-15 dígitos" required>
+            <span id="telefono-status" class="absolute right-3 top-1/2 transform -translate-y-1/2"></span>
+        </div>
+
+        <!-- Dirección -->
+        <div class="relative md:col-span-2">
+            <label class="block font-medium mb-1">Dirección</label>
+            <textarea id="direccion" name="direccion" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400 pr-10"
+                      maxlength="200" required>{% if direccion %}{{ direccion }}{% endif %}</textarea>
+            <span id="direccion-status" class="absolute right-3 top-1/2 transform -translate-y-1/2"></span>
+        </div>
+
+        <!-- Foto -->
+        <div class="relative md:col-span-2">
+            <label class="block font-medium mb-1">Foto</label>
+            <input type="file" name="foto" accept="image/*" class="w-full p-2 border rounded focus:ring-2 focus:ring-blue-400">
+        </div>
+
+        <div class="md:col-span-2 text-center">
+            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition font-medium">
+                Registrar
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Scripts para validación visual -->
+<script>
+const fields = [
+    {id: 'nombre', regex: /^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/},
+    {id: 'apellido', regex: /^[A-Za-záéíóúÁÉÍÓÚñÑ\s]{2,50}$/},
+    {id: 'cedula', regex: /^\d{10}$/},
+    {id: 'email', regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/},
+    {id: 'telefono', regex: /^\d{7,15}$/},
+    {id: 'direccion', regex: /^.{1,200}$/}
+];
+
+fields.forEach(field => {
+    const input = document.getElementById(field.id);
+    const status = document.getElementById(`${field.id}-status`);
+    input.addEventListener('input', () => {
+        status.innerHTML = "";
+        if(input.value === "") return;
+        if(field.regex.test(input.value)){
+            status.innerHTML = `<svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+            </svg>`;
+        } else {
+            status.innerHTML = `<svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>`;
+        }
+    });
+});
+</script>
+
+{% endblock %}

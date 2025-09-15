@@ -1,0 +1,61 @@
+/* estilos-movil.css */
+
+/* Contenedor principal */
+body {
+    font-family: 'Arial', sans-serif;
+    background: #e0f2fe; /* fondo azul suave */
+    color: #1e293b; /* gris oscuro para texto */
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar móvil */
+nav {
+    background-color: #0284c7;
+    color: white;
+    padding: 12px 16px;
+    text-align: center;
+}
+
+/* Links del navbar */
+nav a {
+    display: block;
+    padding: 8px 0;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+nav a:hover {
+    background-color: #0369a1;
+}
+
+/* Contenedor de contenido */
+.container {
+    padding: 16px;
+}
+
+/* Tarjetas */
+.card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+/* Footer */
+footer {
+    background-color: #0284c7;
+    color: white;
+    text-align: center;
+    padding: 12px 16px;
+    font-size: 14px;
+}

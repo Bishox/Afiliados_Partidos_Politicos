@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos-movil.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos-escritorio.css') }}">
+    
+    <title>Afiliados Partido Político</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+<!-- Navbar -->
+<nav class="bg-blue-600 text-white shadow fixed w-full z-50">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <!-- Logo -->
+        <div class="text-xl font-bold">Partido Político</div>
+
+        <!-- Botón hamburguesa para móviles -->
+        <div class="md:hidden">
+            <button id="menu-btn" class="focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menú escritorio -->
+        <div class="hidden md:flex gap-6">
+            <a href="{{ url_for('index') }}" class="hover:text-gray-200 transition">Inicio</a>
+            <a href="{{ url_for('registrar') }}" class="hover:text-gray-200 transition">Registrar</a>
+            <a href="{{ url_for('listar_afiliados') }}" class="hover:text-gray-200 transition">Afiliados</a>
+        </div>
+    </div>
+
+    <!-- Menú móvil deslizable -->
+    <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-blue-600 text-white shadow-lg transform translate-x-full transition-transform duration-300 md:hidden z-40">
+        <div class="flex justify-end p-4">
+            <button id="close-menu" class="focus:outline-none">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <nav class="flex flex-col gap-6 px-6 mt-6">
+            <a href="{{ url_for('index') }}" class="hover:text-gray-200 transition">Inicio</a>
+            <a href="{{ url_for('registrar') }}" class="hover:text-gray-200 transition">Registrar</a>
+            <a href="{{ url_for('listar_afiliados') }}" class="hover:text-gray-200 transition">Afiliados</a>
+        </nav>
+    </div>
+
+    <!-- Fondo semi-transparente cuando el menú está abierto -->
+    <div id="overlay" class="fixed inset-0 bg-black opacity-50 hidden z-30 md:hidden"></div>
+</nav>
+
+<!-- Espaciado para navbar fija -->
+<div class="pt-20 flex-1 container mx-auto px-4 py-8">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Footer -->
+<footer class="bg-blue-600 text-white mt-8">
+    <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+        <div class="mb-4 md:mb-0">
+            &copy; {{ current_year if current_year else '2025' }} Partido Político. Todos los derechos reservados.
+        </div>
+        <div class="flex gap-4">
+            <a href="#" class="hover:text-gray-200 transition">Política de Privacidad</a>
+            <a href="#" class="hover:text-gray-200 transition">Términos y Condiciones</a>
+            <a href="#" class="hover:text-gray-200 transition">Contacto</a>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMenu = document.getElementById('close-menu');
+    const overlay = document.getElementById('overlay');
+
+    // Abrir menú
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.remove('translate-x-full');
+        overlay.classList.remove('hidden');
+    });
+
+    // Cerrar menú
+    closeMenu.addEventListener('click', () => {
+        mobileMenu.classList.add('translate-x-full');
+        overlay.classList.add('hidden');
+    });
+
+    // Cerrar al click en overlay
+    overlay.addEventListener('click', () => {
+        mobileMenu.classList.add('translate-x-full');
+        overlay.classList.add('hidden');
+    });
+</script>
+
+</body>
+</html>
