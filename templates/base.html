@@ -27,13 +27,24 @@
             </button>
         </div>
 
-        <!-- Menú escritorio -->
-        <div class="hidden md:flex gap-6">
-            <a href="{{ url_for('index') }}" class="hover:text-gray-200 transition">Inicio</a>
-            <a href="{{ url_for('registrar') }}" class="hover:text-gray-200 transition">Registrar</a>
-            <a href="{{ url_for('listar_afiliados') }}" class="hover:text-gray-200 transition">Afiliados</a>
-        </div>
-    </div>
+      
+
+    <!-- Menú escritorio -->
+<div class="hidden md:flex gap-6 items-center">
+    <a href="{{ url_for('index') }}" class="hover:text-gray-200 transition">Inicio</a>
+    <a href="{{ url_for('registrar') }}" class="hover:text-gray-200 transition">Registrar Afiliado</a>
+    <a href="{{ url_for('listar_afiliados') }}" class="hover:text-gray-200 transition">Afiliados</a>
+
+    {% if current_user.is_authenticated %}
+        <!-- Mostrar botón logout si está logueado -->
+        <a href="{{ url_for('logout') }}" class="hover:text-gray-200 transition font-medium bg-red-500 px-3 py-1 rounded-lg hover:bg-red-600">
+            Cerrar Sesión
+        </a>
+    {% else %}
+        <!-- Mostrar login si no está logueado -->
+        <a href="{{ url_for('login') }}" class="hover:text-gray-200 transition">Iniciar Sesión</a>
+    {% endif %}
+</div>
 
     <!-- Menú móvil deslizable -->
     <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-blue-600 text-white shadow-lg transform translate-x-full transition-transform duration-300 md:hidden z-40">
@@ -49,6 +60,8 @@
             <a href="{{ url_for('index') }}" class="hover:text-gray-200 transition">Inicio</a>
             <a href="{{ url_for('registrar') }}" class="hover:text-gray-200 transition">Registrar</a>
             <a href="{{ url_for('listar_afiliados') }}" class="hover:text-gray-200 transition">Afiliados</a>
+            <a href="{{ url_for('listar_afiliados') }}" class="hover:text-gray-200 transition">Login</a>
+            <a href="{{ url_for('listar_afiliados') }}" class="hover:text-gray-200 transition">Log out</a>
         </nav>
     </div>
 
